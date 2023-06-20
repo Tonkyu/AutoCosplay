@@ -1,14 +1,14 @@
 synthesis.py
 
-def synthesis(pic1,pic2):
+def synthesis(picture1,picture2):
   #ライブラリインポート
   import cv2
   import numpy as np
   #画像の読み込み
-  pic1=cv2.imread('pic1.jpg',cv2.IMREAD_COLOR)
-  pic2=cv2.imread('pic2.jpg',cv2.IMREAD_COLOR)
+  pic1=cv2.imread('picture1',cv2.IMREAD_COLOR)
+  pic2=cv2.imread('picture2',cv2.IMREAD_COLOR)
   #二値化処理
-  pic2gray=cv2.imread('pic2.jpg',cv2.IMREAD_GRAYSCALE)
+  pic2gray=cv2.imread('picture2',cv2.IMREAD_GRAYSCALE)
   ret, thresh = cv2.threshold(pic2gray, 5, 255, cv2.THRESH_BINARY)
   #輪郭抽出
   contours, hierarchy = cv2.findContours(thresh, cv2.RETR_LIST,cv2.CHAIN_APPROX_NONE)
