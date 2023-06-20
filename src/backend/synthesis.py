@@ -1,4 +1,5 @@
 synthesis.py
+#背景透過済みの人物画像と背景画像の合成
 
 def synthesis(picture1,picture2):
   #ライブラリインポート
