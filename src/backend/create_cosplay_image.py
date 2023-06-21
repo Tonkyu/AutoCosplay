@@ -1,7 +1,6 @@
 import cv2
 import dlib
 import numpy as np
-
 import sys
 from os import path
 
@@ -29,7 +28,9 @@ def create_face_parts(image):
       shape = shape_np
   return shape
 
-def create_mask_image(face_points):
+def create_mask_image(input_image):
+    face_points = create_cosplay_image(input_image)
+    print(face_points)
     mask_image_path = ''
     nose_point = (0, 0)
     return mask_image_path, nose_point
@@ -42,17 +43,15 @@ def calculate_offset(anime_nose_point, mask_nose_point):
 def create_cosplay_image(human_img_path, anime_img_path):
     human_img = cv2.imread(human_img_path)
     anime_img = cv2.imread(anime_img_path)
-    face_points = create_face_parts(human_img)
-    print(face_points)
-    mask_image_path, mask_nose_point = create_mask_image(face_points)
+    mask_image_path, mask_nose_point = create_mask_image(human_img)
     mask_img = cv2.imread(mask_image_path)
     anime_nose_point = (0, 0)
     offset = calculate_offset(anime_nose_point, mask_nose_point)
 
-    poisson_blend_result = poisson_edit(human_img, anime_img, mask_img, offset)
+    # poisson_blend_result = poisson_edit(human_img, anime_img, mask_img, offset)
 
     output_path = ''
-    cv2.imwrite(output_path, poisson_blend_result)
+    # cv2.imwrite(output_path, poisson_blend_result)
 
 
 if __name__ == '__main__':
