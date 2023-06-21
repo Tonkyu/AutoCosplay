@@ -12,7 +12,6 @@ from poisson_image_editing import poisson_edit
 
 
 def create_face_parts(image):
-
     # use dlib
     # reference: https://towardsdatascience.com/face-landmark-detection-using-python-1964cb620837
     detector = dlib.get_frontal_face_detector()
@@ -34,7 +33,7 @@ def create_face_parts(image):
 
 def create_mask_image(human_image,anime_img):
     human_face_points = create_face_parts(human_image)
-    anime_face_points = create_cosplay_image(anime_img)
+    anime_face_points = create_face_parts(anime_img)
 
 
     mask_image_path = ''
