@@ -34,4 +34,4 @@ def change_background(img1,img2):
   composite_image = Image.alpha_composite(resized_background, output_image)
 
   # 合成した画像を保存
-  composite_image.save('./images/composite_image.png')
+  composite_image.save('../images/uploaded/composite_image.png')
