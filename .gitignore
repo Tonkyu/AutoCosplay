@@ -1,3 +1,5 @@
 /src/backend/resources/*
 
 /src/frontend/.DS_Store
+
+.DS_Store
