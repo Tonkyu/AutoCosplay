@@ -2,3 +2,4 @@ dlib
 opencv-contrib-python
 cmake
 numpy
+streamlit
