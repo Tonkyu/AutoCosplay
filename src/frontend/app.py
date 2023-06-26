@@ -1,4 +1,4 @@
-# streamlit run app.py
+# streamlit run app.pyというコマンドをターミナルで実行して表示されるURLに以下を構築
 import streamlit as st
 import cv2
 import numpy as np
