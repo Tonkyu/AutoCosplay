@@ -6,9 +6,9 @@ from os import path
 
 sys.path.insert(0, 'poisson-image-editing/')
 
-from paint_mask import MaskPainter
-from move_mask import MaskMover
-from poisson_image_editing import poisson_edit
+#from paint_mask import MaskPainter
+#from move_mask import MaskMover
+#from poisson_image_editing import poisson_edit
 
 
 def create_face_parts(image):
@@ -31,6 +31,7 @@ def create_face_parts(image):
     cv2.waitKey()
     return shape
 
+# ここ作る
 def create_mask_image(human_image,anime_img):
     human_face_points = create_face_parts(human_image)
     anime_face_points = create_face_parts(anime_img)
@@ -38,6 +39,7 @@ def create_mask_image(human_image,anime_img):
 
     mask_image_path = ''
 
+    original_mask_img
     return mask_image_path
 
 
