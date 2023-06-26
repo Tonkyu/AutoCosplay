@@ -1,27 +1,36 @@
-synthesis.py
-#背景透過済みの人物画像と背景画像の合成
+#rembgライブラリによる背景削除
+#事前にpipコマンドでrembgライブラリをインストールする必要あり
 
-def synthesis(picture1,picture2):
-  #ライブラリインポート
-  import cv2
-  import numpy as np
-  #画像の読み込み
-  pic1=cv2.imread('picture1',cv2.IMREAD_COLOR)
-  pic2=cv2.imread('picture2',cv2.IMREAD_COLOR)
-  #二値化処理
-  pic2gray=cv2.imread('picture2',cv2.IMREAD_GRAYSCALE)
-  ret, thresh = cv2.threshold(pic2gray, 5, 255, cv2.THRESH_BINARY)
-  #輪郭抽出
-  contours, hierarchy = cv2.findContours(thresh, cv2.RETR_LIST,cv2.CHAIN_APPROX_NONE)
-  max_cnt =max(contours, key=lambda x: cv2.contourArea(x))
-  #マスク画像の作成
-  pic2thresh = cv2.drawContours(pic2gray, [max_cnt], -1, 255, -1)
-  cv2.imwrite('pic2thresh2.jpg',np.array(pic2thresh))
-  #画像合成前処理
-  pic2[pic2thresh<255]=[0,0,0]
-  pic1[pic2thresh==255]=[0,0,0]
-  cv2.imwrite('pic2thres3.jpg',np.array(pic1))
-  #画像合成
-  pic3=cv2.add(pic1,pic2)
-  cv2.imwrite('add.jpg',np.array(pic3))
+import rembg
+from PIL import Image
+import io
 
+
+# 背景を削除したい画像のパス
+input_image_path = '初音ミク.png'
+
+# 背景画像のパス
+background_image_path = 'background.png'
+
+# 背景を削除したい画像を読み込み
+with open(input_image_path, 'rb') as f:
+    input_image = f.read()
+
+# 背景を削除
+output_image = rembg.remove(input_image)
+
+# 背景を削除した画像をPIL Imageオブジェクトとして読み込み
+output_image = Image.open(io.BytesIO(output_image)).convert('RGBA')
+
+# 背景画像を読み込み
+background_image = Image.open(background_image_path).convert('RGBA')
+
+width, height = output_image.size
+new_size=(width,height)
+resized_background = background_image.resize(new_size)
+
+# 背景を削除した画像と背景画像を合成
+composite_image = Image.alpha_composite(resized_background, output_image)
+
+# 合成した画像を保存
+composite_image.save('composite_image.png')
