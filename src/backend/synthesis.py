@@ -7,9 +7,11 @@ import io
 
 
 # 背景を削除したい画像のパス
+###frontendでキャラの名前を選択するとここにパスが渡るようにしたい!###
 input_image_path = './images/初音ミク.png'
 
 # 背景画像のパス
+###frontendで背景の名前をを選択するとここにパスが渡るようにしたい!###
 background_image_path = './images/background.png'
 
 # 背景を削除したい画像を読み込み
