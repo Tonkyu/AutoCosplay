@@ -7,10 +7,10 @@ import io
 
 
 # 背景を削除したい画像のパス
-input_image_path = '初音ミク.png'
+input_image_path = './images/初音ミク.png'
 
 # 背景画像のパス
-background_image_path = 'background.png'
+background_image_path = './images/background.png'
 
 # 背景を削除したい画像を読み込み
 with open(input_image_path, 'rb') as f:
@@ -34,4 +34,4 @@ resized_background = background_image.resize(new_size)
 composite_image = Image.alpha_composite(resized_background, output_image)
 
 # 合成した画像を保存
-composite_image.save('composite_image.png')
+composite_image.save('./images/composite_image.png')
