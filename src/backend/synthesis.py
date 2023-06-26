@@ -25,6 +25,7 @@ output_image = Image.open(io.BytesIO(output_image)).convert('RGBA')
 # 背景画像を読み込み
 background_image = Image.open(background_image_path).convert('RGBA')
 
+#背景画像を人物画像のサイズに合わせてリサイズ
 width, height = output_image.size
 new_size=(width,height)
 resized_background = background_image.resize(new_size)
