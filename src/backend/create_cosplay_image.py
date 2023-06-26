@@ -6,9 +6,7 @@ from os import path
 
 sys.path.insert(0, 'poisson-image-editing/')
 
-#from paint_mask import MaskPainter
-#from move_mask import MaskMover
-#from poisson_image_editing import poisson_edit
+from poisson_image_editing import poisson_edit
 
 
 def create_face_parts(image):
@@ -36,34 +34,29 @@ def create_mask_image(human_image,anime_img):
     human_face_points = create_face_parts(human_image)
     anime_face_points = create_face_parts(anime_img)
 
-
     mask_image_path = ''
 
     original_mask_img
     return mask_image_path
 
 
-def calculate_main_parts(face_parts):
-    return 0
-
-def merge_images(human_img, anime_img):
+def merge_images(human_img, anime_img, output_path):
     mask_img_path = create_mask_image(human_img, anime_img)
     mask_img = cv2.imread(mask_img_path)
-    result = poisson_edit(human_img, anime_img, mask_img, offset)
-    result = ''
-    return result
+    result = poisson_edit(human_img, anime_img, mask_img, offset=(0,0))
+    cv2.imwrite(output_path, result)
 
 
-def create_cosplay_image(human_img_path, anime_img_path):
+def create_cosplay_image(human_img_path, anime_img_path, character_name):
     human_img = cv2.imread(human_img_path)
     anime_img = cv2.imread(anime_img_path)
 
-    merge_result = merge_images(human_img, anime_img)
-    output_path = ''
-    # cv2.imwrite(output_path, poisson_blend_result)
-
+    output_path = '../images/products/' + character_name
+    merge_images(human_img, anime_img, output_path)
+    return output_path
 
 if __name__ == '__main__':
-		human_img_path = '../images/初音ミク-1.png'
-		anime_img_path = ''
-		create_cosplay_image(human_img_path, anime_img_path)
+    human_img_path = '../images/characters/miku.png'
+    anime_img_path = '../images/characters/miku.png'
+    character_name = 'miku'
+    create_cosplay_image(human_img_path, anime_img_path, character_name)
