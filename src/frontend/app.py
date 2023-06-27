@@ -20,7 +20,7 @@ sys.path.append("../backend")
 
 
 #sys.pathを用いて動かしたいファイルをインポート
-#import create_cosplay_image.py
+#import create_cosplay_image
 import change_background
 
 
