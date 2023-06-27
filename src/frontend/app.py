@@ -84,7 +84,7 @@ if uploaded_completed_file != None:
     #一時ファイルを削除
     os.remove(temp_file_path)
 
-    #完成画像img3をimagesのuploadedに保存
+    #完成画像img3をimagesのuploadedに保存(おそらくrunを止めた時点の画像が保存される)
     img3=Image.open("../images/uploaded/composite_image.png")
     img3_array=np.array(img3)
 
