@@ -42,9 +42,9 @@ markdown = """
 """
 st.markdown(markdown)
 
-sys.path.append("../backend")
-
-# import create_cosplay_image
+sys.path.append('../backend')
+sys.path.append('../backend/poisson-image-editing/')
+import create_cosplay_image
 import change_background
 
 
@@ -56,11 +56,26 @@ image_list = os.listdir(anime_directory)
 
 selected_anime_image = st.selectbox("アニメ画像を選択", image_list)
 
-image_path = os.path.join(anime_directory, selected_anime_image)
+anime_image_path = os.path.join(anime_directory, selected_anime_image)
 
 if selected_anime_image is not None:
-    image = Image.open(image_path)
+    image = Image.open(anime_image_path)
     st.image(image, caption="選択した画像", use_column_width=True)
+
+human_file = st.file_uploader("人間の画像pngかjpg", type=["png", "jpg"])
+
+if human_file != None:
+    human_img = Image.open(io.BytesIO(human_file.read()))
+    human_img.save(human_file.name + '.png')
+    print(anime_image_path)
+
+# アニメ画像と人間画像のパスを取得
+human_img_path = ''
+anime_img_path = ''
+
+#  ボタンを押したら
+create_cosplay_image(human_img_path, anime_img_path)
+
 
 ###################################
 
