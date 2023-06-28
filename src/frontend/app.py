@@ -10,7 +10,6 @@ from PIL import Image
 
 st.set_page_config(
     page_title="AutoCos",
-    page_icon=Image.open("../images/page_item/camera.png"),
     layout="wide",
 )
 
