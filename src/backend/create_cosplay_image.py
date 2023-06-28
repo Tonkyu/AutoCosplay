@@ -2,6 +2,7 @@ import cv2
 import dlib
 import numpy as np
 import sys
+from kao import face_exchange
 from os import path
 from PIL import Image, ImageDraw, ImageFilter 
 import matplotlib.pyplot as plt
@@ -66,7 +67,8 @@ def create_cosplay_image(human_img_path, anime_img_path, character_name):
     return output_path
 
 if __name__ == '__main__':
-    human_img_path = '../images/characters/miku.png'
+    human_img_path = '../images/characters/ace.png'
     anime_img_path = '../images/characters/miku.png'
     character_name = 'miku'
-    create_cosplay_image(human_img_path, anime_img_path, character_name)
+    # create_cosplay_image(human_img_path, anime_img_path, character_name)
+    face_exchange(human_img_path, anime_img_path)
