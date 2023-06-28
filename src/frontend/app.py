@@ -16,11 +16,23 @@ st.markdown(markdown)
 
 sys.path.append("../backend")
 
-#import create_cosplay_image
+# import create_cosplay_image
 import change_background
 
 
 ########機能1 顔交換プログラム#########
+
+anime_directory = "../images/characters"
+
+image_list = os.listdir(anime_directory)
+
+selected_anime_image = st.selectbox("アニメ画像を選択", image_list)
+
+image_path = os.path.join(anime_directory, selected_anime_image)
+
+if selected_anime_image is not None:
+    image = Image.open(image_path)
+    st.image(image, caption="選択した画像", use_column_width=True)
 
 ###################################
 
@@ -38,7 +50,7 @@ if uploaded_completed_file != None:
     ### 背景画像を選択してください
     """
     st.markdown(markdown)
-    
+
 
     ###背景画像を表示して選ぶ機能###
 
