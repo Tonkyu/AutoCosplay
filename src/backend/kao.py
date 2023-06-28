@@ -3,6 +3,22 @@ from PIL import Image, ImageDraw, ImageFilter
 import cv2
 import dlib
 import numpy as np
+import sys
+
+sys.path.insert(0, 'poisson-image-editing/')
+from poisson_image_editing import poisson_edit
+
+def pil2cv(image):
+    ''' PIL型 -> OpenCV型 '''
+    new_image = np.array(image, dtype=np.uint8)
+    if new_image.ndim == 2:  # モノクロ
+        pass
+    elif new_image.shape[2] == 3:  # カラー
+        new_image = cv2.cvtColor(new_image, cv2.COLOR_RGB2BGR)
+    elif new_image.shape[2] == 4:  # 透過
+        new_image = cv2.cvtColor(new_image, cv2.COLOR_RGBA2BGRA)
+    return new_image
+
 
 def face_exchange(base, to):
     """
@@ -74,8 +90,13 @@ def face_exchange(base, to):
     im = Image.new("L", top.size, 0)
     draw = ImageDraw.Draw(im)
     for v in new_a:
-        draw.rectangle((v[0], v[1], new_a[30, 0], new_a[30, 1]), fill=255)
-    im_blur = im.filter(ImageFilter.GaussianBlur(20))
+        min_x = min(v[0], new_a[30, 0])
+        max_x = max(v[0], new_a[30, 0])
+        min_y = min(v[1], new_a[30, 1])
+        max_y = max(v[1], new_a[30, 1])
+        draw.rectangle((min_x, min_y, max_x, max_y), fill=255)
+    im_blur = im.filter(ImageFilter.GaussianBlur(20)) # mask image
+
     base_resize = Image.open("images/base_resize.jpeg")
     mask_size = (max(im_blur.size[0], base_resize.size[0]),
                  max(im_blur.size[1], base_resize.size[1]))
@@ -85,9 +106,15 @@ def face_exchange(base, to):
                                      translate=tuple(shape_to[30, :] - shape_base[30, :]))
     
     im_crop = base_rotate.crop((0, 0, top.size[0], top.size[1]))
-    top.paste(im_crop, (0, 0), im_blur)
-    top.save((output := "images/new.jpeg"))
-    return output
+
+    im_crop_cv2 = pil2cv(im_crop)
+    top_cv2 = pil2cv(top)
+    im_blur_cv2 = pil2cv(im_blur)
+
+    result = poisson_edit(im_crop_cv2, top_cv2, im_blur_cv2, offset=(0,0))
+    output_path = 'images/new.jpeg'
+    cv2.imwrite(output_path, result)
+    return output_path
 
 if __name__ == "__main__":
     import sys
