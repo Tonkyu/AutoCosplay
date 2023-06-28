@@ -3,6 +3,8 @@ import dlib
 import numpy as np
 import sys
 from os import path
+from PIL import Image, ImageDraw, ImageFilter 
+import matplotlib.pyplot as plt
 
 sys.path.insert(0, 'poisson-image-editing/')
 
@@ -23,28 +25,36 @@ def create_face_parts(image):
         for i in range(68):
             shape_np[i] = (shape.part(i).x, shape.part(i).y)
         shape = shape_np
-    for i, (x, y) in enumerate(shape):
-      cv2.circle(image, (x, y), 1, (0, 0, 255), -1)
-    cv2.imshow('Landmark Detection', image)
-    cv2.waitKey()
+    # for i, (x, y) in enumerate(shape):
+    #     cv2.circle(image, (x, y), 1, (0, 0, 255), -1)
+    # cv2.imshow('Landmark Detection', image)
+    # cv2.waitKey()
     return shape
 
-# ここ作る
-def create_mask_image(human_image,anime_img):
-    human_face_points = create_face_parts(human_image)
+def create_mask_image(human_img, anime_img):
+    human_face_points = create_face_parts(human_img)
     anime_face_points = create_face_parts(anime_img)
 
-    mask_image_path = ''
+    im = Image.new("L",tuple(reversed(human_img.shape[:2])), 0)
+    draw = ImageDraw.Draw(im)
 
-    original_mask_img
+    for v in human_face_points:
+        min_x = min(v[0], human_face_points[30, 0])
+        max_x = max(v[0], human_face_points[30, 0])
+        min_y = min(v[1], human_face_points[30, 1])
+        max_y = max(v[1], human_face_points[30, 1])
+        draw.rectangle((min_x, min_y, max_x, max_y), fill=255)
+    plt.imshow(im, cmap="gray")
+    mask_image_path = 'mask.jpg'
+    im.save(mask_image_path)
     return mask_image_path
 
 
 def merge_images(human_img, anime_img, output_path):
     mask_img_path = create_mask_image(human_img, anime_img)
     mask_img = cv2.imread(mask_img_path)
-    result = poisson_edit(human_img, anime_img, mask_img, offset=(0,0))
-    cv2.imwrite(output_path, result)
+    # result = poisson_edit(human_img, anime_img, mask_img, offset=(0,0))
+    # cv2.imwrite(output_path, result)
 
 
 def create_cosplay_image(human_img_path, anime_img_path, character_name):
