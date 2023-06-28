@@ -4,6 +4,7 @@ import cv2
 import dlib
 import numpy as np
 import sys
+import re
 
 sys.path.insert(0, 'poisson-image-editing/')
 from poisson_image_editing import poisson_edit
@@ -57,8 +58,8 @@ def face_exchange(base, to):
     base_resize = basep.resize(tuple(new_size))
     base_resize.save("images/base_resize.jpeg")
 
-    base = cv2.imread("images/base_resize.jpeg")
-    gray = cv2.cvtColor(base, cv2.COLOR_BGR2GRAY)
+    base_cv = cv2.imread("images/base_resize.jpeg")
+    gray = cv2.cvtColor(base_cv, cv2.COLOR_BGR2GRAY)
     rects = detector(gray, 1)
     for rect in rects:
         shape = predictor(gray, rect)
@@ -72,8 +73,9 @@ def face_exchange(base, to):
     theta = np.arccos(
         np.dot(vec_base, vec_to)/(np.linalg.norm(vec_base) * np.linalg.norm(vec_to))
     )
-    ratio = np.linalg.norm(vec_to) / np.linalg.norm(vec_base)
-    mat = ratio * np.array([
+    #ratio = np.linalg.norm(vec_to) / np.linalg.norm(vec_base)
+    #mat = ratio * np.array([
+    mat = np.array([
         [np.cos(theta), -np.sin(theta)],
         [np.sin(theta), np.cos(theta)]
     ])
@@ -112,7 +114,9 @@ def face_exchange(base, to):
     im_blur_cv2 = pil2cv(im_blur)
 
     result = poisson_edit(im_crop_cv2, top_cv2, im_blur_cv2, offset=(0,0))
-    output_path = 'images/new.jpeg'
+
+    p = re.compile("(.+)\..+")
+    output_path = "../images/output" + p.findall(base)[0] + p.findall(to)[0] + ".jpeg"
     cv2.imwrite(output_path, result)
     return output_path
 

@@ -88,7 +88,7 @@ def face_exchange(base, to):
     im_crop = base_rotate.crop((0, 0, top.size[0], top.size[1]))
     top.paste(im_crop, (0, 0), im_blur)
     p = re.compile("(.+)\..+")
-    top.save((output := "images/" + p.findall(base)[0] + p.findall(to)[0] + ".jpeg"))
+    top.save((output := "../images/output" + p.findall(base)[0] + p.findall(to)[0] + ".jpeg"))
     return output
 
 if __name__ == "__main__":
