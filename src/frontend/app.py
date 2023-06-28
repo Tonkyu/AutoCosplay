@@ -8,6 +8,32 @@ import os
 import tempfile
 from PIL import Image
 
+st.set_page_config(
+    page_title="AutoCos",
+    layout="wide",
+)
+
+# サイドバーレイアウト (Sidebar)
+character_directory="../images/anime_characters"
+character_list = [file for file in os.listdir(character_directory) if not file.startswith('.')]
+character_list_without_extension = [os.path.splitext(filename)[0] for filename in character_list]
+character_selected = st.sidebar.selectbox('コスプレできるキャラ一覧', character_list_without_extension)
+character_path = os.path.join(character_directory, character_selected + ".jpg")
+if character_selected is not None:
+    image = Image.open(character_path)
+    st.sidebar.image(image,  use_column_width=True)
+
+
+background_directory="../images/backgrounds"
+background_list = [file for file in os.listdir(background_directory) if not file.startswith('.')]
+background_list_without_extension = [os.path.splitext(filename)[0] for filename in background_list]
+background_selected = st.sidebar.selectbox('変更できる背景一覧', background_list_without_extension,key="background_select1")
+background_path = os.path.join(background_directory, background_selected + ".png")
+
+if background_selected is not None:
+    image = Image.open(background_path)
+    st.sidebar.image(image,  use_column_width=True)
+
 markdown = """
 # プロジェクト演習E班 成果物
 ##  どこでもコスプレアプリ(仮)
