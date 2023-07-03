@@ -7,6 +7,7 @@ import io
 import os
 import tempfile
 from PIL import Image
+import dlib
 
 markdown = """
 # プロジェクト演習E班 成果物
@@ -16,7 +17,7 @@ st.markdown(markdown)
 
 sys.path.append('../backend')
 sys.path.append('../backend/poisson-image-editing/')
-import create_cosplay_image
+import kao
 import change_background
 
 
@@ -38,15 +39,19 @@ human_file = st.file_uploader("人間の画像pngかjpg", type=["png", "jpg"])
 
 if human_file != None:
     human_img = Image.open(io.BytesIO(human_file.read()))
-    human_img.save(human_file.name + '.png')
+    human_img.save((human_image_path := '../images/human/' + human_file.name))
     print(anime_image_path)
 
 # アニメ画像と人間画像のパスを取得
-human_img_path = ''
-anime_img_path = ''
-
+#human_img_path = '' # ../images/human/何たら
+#anime_img_path = '' # ../images/characters/何たら
 #  ボタンを押したら
-create_cosplay_image(human_img_path, anime_img_path)
+ret = st.button("画像を生成!")
+if ret:
+    predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
+    output_path = kao.face_exchange(human_image_path, anime_image_path, predictor) # ../images/output/何たら
+    out = Image.open(output_path)
+    st.image(out)
 
 
 ###################################

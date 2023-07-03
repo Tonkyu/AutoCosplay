@@ -5,6 +5,7 @@ import dlib
 import numpy as np
 import sys
 import re
+import os
 
 sys.path.insert(0, 'poisson-image-editing/')
 from poisson_image_editing import poisson_edit
@@ -21,14 +22,14 @@ def pil2cv(image):
     return new_image
 
 
-def face_exchange(base, to):
+def face_exchange(base, to, predictor):
     """
     base 顔を切り抜かれる方の画像のパス
     to 顔を貼り付けられる方の画像のパス
     返り値 新しく生成した画像のパス
     """
     detector = dlib.get_frontal_face_detector()
-    predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
+    #predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
     base_cv = cv2.imread(base)
     to_cv = cv2.imread(to)
     gray = cv2.cvtColor(base_cv, cv2.COLOR_BGR2GRAY)
@@ -116,13 +117,15 @@ def face_exchange(base, to):
     result = poisson_edit(im_crop_cv2, top_cv2, im_blur_cv2, offset=(0,0))
 
     p = re.compile("(.+)\..+")
-    output_path = "../images/output" + p.findall(base)[0] + p.findall(to)[0] + ".jpeg"
+    output_path = "../images/output" \
+        + p.findall(os.path.basename(base))[0] + p.findall(os.path.basename(to))[0] + ".jpeg"
     cv2.imwrite(output_path, result)
     return output_path
 
 if __name__ == "__main__":
     import sys
-    output = face_exchange("megane.jpeg", "lennon.jpeg")
+    predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
+    output = face_exchange("megane.jpeg", "lennon.jpeg", predictor)
     img = cv2.imread(output)
     if img is None:
         sys.exit()
