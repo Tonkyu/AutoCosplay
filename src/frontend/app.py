@@ -8,6 +8,21 @@ import os
 import tempfile
 from PIL import Image
 
+def render()->st:
+    bg_img = '''
+    <style>
+    .stApp {
+      background-image: url("https://drive.google.com/uc?export=view&id=1tPVIZf2juZ2hLW0SKvPvnPcUdHiqX7Vu");
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    </style>
+    '''
+
+    return st.markdown(bg_img, unsafe_allow_html=True)
+
+render()
+
 st.set_page_config(
     page_title="AutoCos",
     layout="wide",
