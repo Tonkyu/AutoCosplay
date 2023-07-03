@@ -18,7 +18,7 @@ def render()->st:
     bg_img = '''
     <style>
     .stApp {
-      background-image: url("https://drive.google.com/uc?export=view&id=1tPVIZf2juZ2hLW0SKvPvnPcUdHiqX7Vu");
+      background-image: url(""https://drive.google.com/uc?export=view&id=1hKAfLRL-SosYZHREqfqdoKFFNCOs1kDI"");
       background-size: cover;
       background-repeat: no-repeat;
     }
