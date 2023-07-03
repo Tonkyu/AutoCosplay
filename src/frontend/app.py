@@ -21,12 +21,12 @@ def render()->st:
 
     return st.markdown(bg_img, unsafe_allow_html=True)
 
-render()
-
 st.set_page_config(
     page_title="AutoCos",
     layout="wide",
 )
+render()
+
 
 # サイドバーレイアウト (Sidebar)
 character_directory="../images/anime_characters"
