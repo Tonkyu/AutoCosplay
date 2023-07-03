@@ -50,47 +50,6 @@ if background_selected is not None:
     image = Image.open(background_path)
     st.sidebar.image(image,  use_column_width=True)
 
-st.set_page_config(
-    page_title="AutoCos",
-    layout="wide",
-)
-
-def render()->st:
-    bg_img = '''
-    <style>
-    .stApp {
-      background-image: url("https://drive.google.com/uc?export=view&id=1tPVIZf2juZ2hLW0SKvPvnPcUdHiqX7Vu");
-      background-size: cover;
-      background-repeat: no-repeat;
-    }
-    </style>
-    '''
-
-    return st.markdown(bg_img, unsafe_allow_html=True)
-
-render()
-
-# サイドバーレイアウト (Sidebar)
-character_directory="../images/anime_characters"
-character_list = [file for file in os.listdir(character_directory) if not file.startswith('.')]
-character_list_without_extension = [os.path.splitext(filename)[0] for filename in character_list]
-character_selected = st.sidebar.selectbox('コスプレできるキャラ一覧', character_list_without_extension)
-character_path = os.path.join(character_directory, character_selected + ".jpg")
-if character_selected is not None:
-    image = Image.open(character_path)
-    st.sidebar.image(image,  use_column_width=True)
-
-
-background_directory="../images/backgrounds"
-background_list = [file for file in os.listdir(background_directory) if not file.startswith('.')]
-background_list_without_extension = [os.path.splitext(filename)[0] for filename in background_list]
-background_selected = st.sidebar.selectbox('変更できる背景一覧', background_list_without_extension,key="background_select1")
-background_path = os.path.join(background_directory, background_selected + ".png")
-
-if background_selected is not None:
-    image = Image.open(background_path)
-    st.sidebar.image(image,  use_column_width=True)
-
 markdown = """
 # プロジェクト演習E班 成果物
 ##  どこでもコスプレアプリ(仮)
@@ -116,13 +75,13 @@ if selected_anime_image is not None:
     image = Image.open(anime_img_path)
     st.image(image, caption="選択した画像", use_column_width=True)
 
-human_file = st.file_uploader("人間の画像(.png)", type=['png'])
+human_file = st.file_uploader("人間の画像(.png，.jpeg)", type=['png', "jpeg"])
 human_img_path = ''
 
 if human_file != None:
     human_img = Image.open(io.BytesIO(human_file.read()))
     human_img.save((human_image_path := '../images/human/' + human_file.name))
-    print(anime_image_path)
+    print(anime_img_path)
 
 # アニメ画像と人間画像のパスを取得
 #human_img_path = '' # ../images/human/何たら
@@ -131,7 +90,7 @@ if human_file != None:
 ret = st.button("画像を生成!")
 if ret:
     predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
-    output_path = kao.face_exchange(human_image_path, anime_image_path, predictor) # ../images/output/何たら
+    output_path = kao.face_exchange(human_image_path, anime_img_path, predictor) # ../images/output/何たら
     out = Image.open(output_path)
     st.image(out)
 
