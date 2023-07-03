@@ -8,6 +8,11 @@ import os
 import tempfile
 from PIL import Image
 
+st.set_page_config(
+    page_title="AutoCos",
+    layout="wide",
+)
+
 def render()->st:
     bg_img = '''
     <style>
@@ -21,12 +26,7 @@ def render()->st:
 
     return st.markdown(bg_img, unsafe_allow_html=True)
 
-st.set_page_config(
-    page_title="AutoCos",
-    layout="wide",
-)
 render()
-
 
 # サイドバーレイアウト (Sidebar)
 character_directory="../images/anime_characters"
@@ -59,7 +59,6 @@ sys.path.append('../backend')
 sys.path.append('../backend/poisson-image-editing/')
 import create_cosplay_image
 import change_background
-
 
 ########機能1 顔交換プログラム#########
 
