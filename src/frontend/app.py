@@ -84,8 +84,9 @@ if human_file != None:
     human_img_path = human_file.name + '.png'
 
 
-#  ボタンを押したら
-create_cosplay_image(human_img_path, anime_img_path)
+    #  ボタンを押したら
+    if st.button("AutoCosplay!"):
+        create_cosplay_image(human_img_path, anime_img_path)
 
 
 ###################################
