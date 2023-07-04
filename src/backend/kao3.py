@@ -33,6 +33,7 @@ def face_exchange(base, to):
         for i in range(0, 68):
             shape_np[i] = (shape.part(i).x, shape.part(i).y)
         shape_to = shape_np
+    
     vec_base_x = shape_base[16, :] - shape_base[0, :]
     vec_base_y = shape_base[27, :] - shape_base[8, :]
     vec_to_x = shape_to[16, :] - shape_to[0, :]
@@ -100,13 +101,13 @@ def face_exchange(base, to):
     #print(np.array(im_blur), im_blur.size)
     top.paste(im_crop, (0, 0), im_blur)
     p = re.compile("(.+)\..+")
-    top.save((output := "../images/output" +\
+    top.save((output := "../images/output/" +\
                p.findall(os.path.basename(base))[0] + p.findall(os.path.basename(to))[0] + ".jpeg"))
     return output
 
 if __name__ == "__main__":
     import sys
-    output = face_exchange("lennon.jpeg", "../images/characters/takina.png")
+    output = face_exchange("megane.jpeg", "../images/characters/groohuman_2.png")
     img = cv2.imread(output)
     if img is None:
         sys.exit()

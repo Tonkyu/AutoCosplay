@@ -50,12 +50,15 @@ def face_exchange(base, to, predictor):
             shape_np[i] = (shape.part(i).x, shape.part(i).y)
         shape_to = shape_np
 
-    vec_base = shape_base[27, :] - shape_base[8, :]
-    vec_to = shape_to[27, :] - shape_to[8, :]
-    ratio = np.linalg.norm(vec_to) / np.linalg.norm(vec_base)
+    vec_base_x = shape_base[16, :] - shape_base[0, :]
+    vec_base_y = shape_base[27, :] - shape_base[8, :]
+    vec_to_x = shape_to[16, :] - shape_to[0, :]
+    vec_to_y = shape_to[27, :] - shape_to[8, :]
+    ratio_x = np.linalg.norm(vec_to_x) / np.linalg.norm(vec_base_x)
+    ratio_y = np.linalg.norm(vec_to_y) / np.linalg.norm(vec_base_y)
     basep = Image.open(base)
-    size = [basep.size[0], basep.size[1]]
-    new_size = (np.array(size)*ratio).astype(int)
+    size = [basep.size[0] * ratio_x, basep.size[1] * ratio_y]
+    new_size = (np.array(size)).astype(int)
     base_resize = basep.resize(tuple(new_size))
     base_resize.save("images/base_resize.jpeg")
 
@@ -92,13 +95,16 @@ def face_exchange(base, to, predictor):
     top = Image.open(to)
     im = Image.new("L", top.size, 0)
     draw = ImageDraw.Draw(im)
-    for v in new_a:
-        min_x = min(v[0], new_a[30, 0])
-        max_x = max(v[0], new_a[30, 0])
-        min_y = min(v[1], new_a[30, 1])
-        max_y = max(v[1], new_a[30, 1])
-        draw.rectangle((min_x, min_y, max_x, max_y), fill=255)
-    im_blur = im.filter(ImageFilter.GaussianBlur(20)) # mask image
+    for i, v in enumerate(new_a):
+        if i <= 16 or i >= 27:
+            draw.rectangle((v[0], v[1], new_a[30, 0], new_a[30, 1]), fill=255)
+        elif i <= 21:
+            draw.rectangle((min(v[0], shape_to[i, 0]), min(v[1], shape_to[i, 1]), new_a[30, 0], new_a[30, 1]),
+                           fill=255)
+        else:
+            draw.rectangle((max(v[0], shape_to[i, 0]), min(v[1], shape_to[i, 1]), new_a[30, 0], new_a[30, 1]),
+                           fill=255)
+    im_blur = im.filter(ImageFilter.GaussianBlur(10)) # mask image
 
     base_resize = Image.open("images/base_resize.jpeg")
     mask_size = (max(im_blur.size[0], base_resize.size[0]),
