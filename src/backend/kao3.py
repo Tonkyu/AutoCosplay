@@ -6,14 +6,14 @@ import numpy as np
 import re
 import os
 
-def face_exchange(base, to):
+def face_exchange(base, to, predictor):
     """
     base 顔を切り抜かれる方の画像のパス
     to 顔を貼り付けられる方の画像のパス
     返り値 新しく生成した画像のパス
     """
     detector = dlib.get_frontal_face_detector()
-    predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
+    #predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
     base_cv = cv2.imread(base)
     to_cv = cv2.imread(to)
     gray = cv2.cvtColor(base_cv, cv2.COLOR_BGR2GRAY)
@@ -107,7 +107,7 @@ def face_exchange(base, to):
 
 if __name__ == "__main__":
     import sys
-    output = face_exchange("megane.jpeg", "../images/characters/groohuman_2.png")
+    output = face_exchange("megane.jpeg", "../images/characters/eren.png")
     img = cv2.imread(output)
     if img is None:
         sys.exit()

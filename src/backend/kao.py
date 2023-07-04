@@ -34,6 +34,7 @@ def face_exchange(base, to, predictor):
     to_cv = cv2.imread(to)
     gray = cv2.cvtColor(base_cv, cv2.COLOR_BGR2GRAY)
     rects = detector(gray, 1)
+    #　移す元の顔の倍率を測って，顔の大きさを移す先に合わせる．
     for rect in rects:
         shape = predictor(gray, rect)
         shape_np = np.zeros((68, 2), dtype=int)
@@ -49,7 +50,7 @@ def face_exchange(base, to, predictor):
         for i in range(0, 68):
             shape_np[i] = (shape.part(i).x, shape.part(i).y)
         shape_to = shape_np
-
+    # 倍率測って移す元のサイズを変換
     vec_base_x = shape_base[16, :] - shape_base[0, :]
     vec_base_y = shape_base[27, :] - shape_base[8, :]
     vec_to_x = shape_to[16, :] - shape_to[0, :]
@@ -62,6 +63,7 @@ def face_exchange(base, to, predictor):
     base_resize = basep.resize(tuple(new_size))
     base_resize.save("images/base_resize.jpeg")
 
+    # リサイズした画像の顔のぽちぽちを図る．
     base_cv = cv2.imread("images/base_resize.jpeg")
     gray = cv2.cvtColor(base_cv, cv2.COLOR_BGR2GRAY)
     rects = detector(gray, 1)
@@ -72,6 +74,7 @@ def face_exchange(base, to, predictor):
             shape_np[i] = (shape.part(i).x, shape.part(i).y)
         shape_base = shape_np
 
+    # 鼻の角度を図る
     vec_base = shape_base[27, :] - shape_base[30, :]
     vec_to = shape_to[27, :] - shape_to[30, :]
     theta = np.arccos(
@@ -79,6 +82,8 @@ def face_exchange(base, to, predictor):
     )
     #ratio = np.linalg.norm(vec_to) / np.linalg.norm(vec_base)
     #mat = ratio * np.array([
+
+    # 移動分のベクトルを求める
     mat = np.array([
         [np.cos(theta), -np.sin(theta)],
         [np.sin(theta), np.cos(theta)]
@@ -92,6 +97,7 @@ def face_exchange(base, to, predictor):
     new_a = l + shape_to[30, :]
     new_a = new_a.astype(int)
 
+    # マスク作り
     top = Image.open(to)
     im = Image.new("L", top.size, 0)
     draw = ImageDraw.Draw(im)
@@ -118,7 +124,7 @@ def face_exchange(base, to, predictor):
 
     im_crop_cv2 = pil2cv(im_crop)
     top_cv2 = pil2cv(top)
-    im_blur_cv2 = pil2cv(im_blur)
+    im_blur_cv2 = np.array(im)
 
     result = poisson_edit(im_crop_cv2, top_cv2, im_blur_cv2, offset=(0,0))
 
