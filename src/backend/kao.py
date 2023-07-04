@@ -110,7 +110,7 @@ def face_exchange(base, to, predictor):
     
     im_crop = base_rotate.crop((0, 0, top.size[0], top.size[1]))
 
-    im_crop_cv2 = pil2cv(im_crop)
+    im_crop_cv2 = np.array(im_crop)
     top_cv2 = pil2cv(top)
     im_blur_cv2 = pil2cv(im_blur)
 
@@ -125,7 +125,7 @@ def face_exchange(base, to, predictor):
 if __name__ == "__main__":
     import sys
     predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
-    output = face_exchange("megane.jpeg", "lennon.jpeg", predictor)
+    output = face_exchange("lennon.jpeg", "megane.jpeg", predictor)
     img = cv2.imread(output)
     if img is None:
         sys.exit()

@@ -77,7 +77,7 @@ def face_exchange(base, to):
     draw = ImageDraw.Draw(im)
     for v in new_a:
         draw.rectangle((v[0], v[1], new_a[30, 0], new_a[30, 1]), fill=255)
-    im_blur = im.filter(ImageFilter.GaussianBlur(20))
+    im_blur = im.filter(ImageFilter.GaussianBlur(10))
     base_resize = Image.open("images/base_resize.jpeg")
     mask_size = (max(im_blur.size[0], base_resize.size[0]),
                  max(im_blur.size[1], base_resize.size[1]))
@@ -95,7 +95,7 @@ def face_exchange(base, to):
 
 if __name__ == "__main__":
     import sys
-    output = face_exchange("lennon.jpeg", "megane.jpeg")
+    output = face_exchange("lennon.jpeg", "../images/characters/miku.png")
     img = cv2.imread(output)
     if img is None:
         sys.exit()

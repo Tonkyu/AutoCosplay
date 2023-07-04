@@ -106,7 +106,7 @@ def face_exchange(base, to):
 
 if __name__ == "__main__":
     import sys
-    output = face_exchange("lennon.jpeg", "../images/characters/eren.png")
+    output = face_exchange("lennon.jpeg", "../images/characters/takina.png")
     img = cv2.imread(output)
     if img is None:
         sys.exit()
