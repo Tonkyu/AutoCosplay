@@ -107,7 +107,8 @@ def face_exchange(base, to, predictor):
 
 if __name__ == "__main__":
     import sys
-    output = face_exchange("megane.jpeg", "../images/characters/eren.png")
+    predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
+    output = face_exchange("megane.jpeg", "../images/characters/miku.png", predictor)
     img = cv2.imread(output)
     if img is None:
         sys.exit()

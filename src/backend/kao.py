@@ -114,9 +114,9 @@ def face_exchange(base, to, predictor):
             max_y = max(min(v[1], shape_to[i, 1]), new_a[30, 1])
         else:
             min_x = min(max(v[0], shape_to[i, 0]), new_a[30, 0])
-            min_y = min(max(v[1], shape_to[i, 1]), new_a[30, 1])
+            min_y = min(min(v[1], shape_to[i, 1]), new_a[30, 1])
             max_x = max(max(v[0], shape_to[i, 0]), new_a[30, 0])
-            max_y = max(max(v[1], shape_to[i, 1]), new_a[30, 1])
+            max_y = max(min(v[1], shape_to[i, 1]), new_a[30, 1])
         draw.rectangle((min_x, min_y, max_x, max_y), fill=255)
     im_blur = im.filter(ImageFilter.GaussianBlur(10)) # mask image
 
