@@ -105,12 +105,15 @@ if selected_anime_image is not None:
     st.image(image, caption="選択した画像", use_column_width=True)
 
 human_file = st.file_uploader("人間の画像(.png，.jpeg)", type=['png', "jpeg"])
-human_img_path = ''
+#human_img_path = ''
+if "human_img_path" not in st.session_state:
+    st.session_state.human_img_path = ''
 
 if human_file != None:
     human_img = Image.open(io.BytesIO(human_file.read()))
-    human_img.save((human_image_path := '../images/human/' + human_file.name))
-    print(anime_img_path)
+    st.session_state.human_image_path = '../images/human/' + human_file.name
+    human_img.save(st.session_state.human_image_path)
+    print(st.session_state.human_image_path)
 
 # アニメ画像と人間画像のパスを取得
 #human_img_path = '' # ../images/human/何たら
@@ -120,16 +123,16 @@ ret = st.button("画像を生成!")
 if "ret_flag" not in st.session_state:
     st.session_state.ret_flag = False
     print("ret_flagない")
+if "output_path" not in st.session_state:
+    st.session_state.output_path = ""
 if ret:
+    print(st.session_state.human_image_path + " in ret")
     predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
-    output_path = kao.face_exchange(human_image_path, anime_img_path, predictor) # ../images/output/何たら
-    """
-    out = Image.open(output_path)
-    st.image(out)
-    """
+    output_path = kao.face_exchange(st.session_state.human_image_path, anime_img_path, predictor) # ../images/output/何たら
+    #out = Image.open(output_path)
+    #st.image(out)
     st.session_state.ret_flag = True
-    if "output_path" not in st.session_state:
-        st.session_state.output_path = output_path
+    st.session_state.output_path = output_path
 
 if st.session_state.ret_flag:
     st.image(st.session_state.output_path)
