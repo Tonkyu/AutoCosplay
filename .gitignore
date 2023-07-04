@@ -5,3 +5,5 @@
 .DS_Store
 
 /src/frontend/images/base_resize.jpeg
+
+/src/images/output/*
