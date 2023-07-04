@@ -75,7 +75,7 @@ def face_exchange(base, to, predictor):
     vec_base = shape_base[27, :] - shape_base[30, :]
     vec_to = shape_to[27, :] - shape_to[30, :]
     theta = np.arccos(
-        np.dot(vec_base, vec_to)/(np.linalg.norm(vec_base) * np.linalg.norm(vec_to))
+        np.dot(vec_base, vec_to) / (np.linalg.norm(vec_base) * np.linalg.norm(vec_to))
     )
     #ratio = np.linalg.norm(vec_to) / np.linalg.norm(vec_base)
     #mat = ratio * np.array([
@@ -123,8 +123,8 @@ def face_exchange(base, to, predictor):
     result = poisson_edit(im_crop_cv2, top_cv2, im_blur_cv2, offset=(0,0))
 
     p = re.compile("(.+)\..+")
-    output_path = "../images/output" \
-        + p.findall(os.path.basename(base))[0] + p.findall(os.path.basename(to))[0] + ".jpeg"
+    output_path = "../images/output_" \
+        + p.findall(os.path.basename(base))[0] + '_' + p.findall(os.path.basename(to))[0] + ".jpeg"
     cv2.imwrite(output_path, result)
     return output_path
 
