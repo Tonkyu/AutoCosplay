@@ -30,11 +30,11 @@ def render()->st:
 render()
 
 # サイドバーレイアウト (Sidebar)
-character_directory="../images/anime_characters"
+character_directory="../images/output"
 character_list = [file for file in os.listdir(character_directory) if not file.startswith('.')]
 character_list_without_extension = [os.path.splitext(filename)[0] for filename in character_list]
 character_selected = st.sidebar.selectbox('コスプレできるキャラ一覧', character_list_without_extension)
-character_path = os.path.join(character_directory, character_selected + ".jpg")
+character_path = os.path.join(character_directory, character_selected + ".jpeg")
 if character_selected is not None:
     image = Image.open(character_path)
     st.sidebar.image(image,  use_column_width=True)
