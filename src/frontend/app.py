@@ -63,6 +63,35 @@ import change_background
 
 ########機能1 顔交換プログラム#########
 
+def st_change_background(img_path):
+
+    img1 = Image.open(img_path)
+
+    markdown = """
+    ### 背景画像を選択してください
+    """
+    st.markdown(markdown)
+    image_directory = "../images/backgrounds"
+    image_list = os.listdir(image_directory)
+    selected_image = st.selectbox("画像を選択", image_list)
+    image_path = os.path.join(image_directory, selected_image)
+    img2=image_path
+
+    # 背景を削除したい画像(img1)を一時ファイルに保存
+    with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as temp_file:
+        img1.save(temp_file.name)
+        temp_file_path = temp_file.name
+    img1=temp_file_path
+
+    change_background.change_background(img1,img2)
+    os.remove(temp_file_path)
+    #完成画像img3をimagesのuploadedに保存(おそらくrunを止めた時点の画像が保存される)
+    img3=Image.open("../images/uploaded/composite_image.png")
+    img3_array=np.array(img3)
+
+    #完成した画像の表示
+    st.image(img3_array, caption="完成画像", use_column_width=True)
+
 anime_directory = "../images/characters"
 
 image_list = os.listdir(anime_directory)
@@ -88,13 +117,23 @@ if human_file != None:
 #anime_img_path = '' # ../images/characters/何たら
 #  ボタンを押したら
 ret = st.button("画像を生成!")
+if "ret_flag" not in st.session_state:
+    st.session_state.ret_flag = False
+    print("ret_flagない")
 if ret:
     predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
     output_path = kao.face_exchange(human_image_path, anime_img_path, predictor) # ../images/output/何たら
+    """
     out = Image.open(output_path)
     st.image(out)
+    """
+    st.session_state.ret_flag = True
+    if "output_path" not in st.session_state:
+        st.session_state.output_path = output_path
 
-
+if st.session_state.ret_flag:
+    st.image(st.session_state.output_path)
+    st_change_background(st.session_state.output_path)
 ###################################
 
 
