@@ -122,12 +122,6 @@ if uploaded_completed_file != None:
     selected_image = st.selectbox("画像を選択", image_list)
 
     image_path = os.path.join(image_directory, selected_image)
-
-    # 画像を表示
-    if selected_image is not None:
-        image = Image.open(image_path)
-        st.image(image, caption="選択した画像", use_column_width=True)
-
     
     img2=image_path
 
