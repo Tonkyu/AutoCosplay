@@ -103,13 +103,21 @@ def face_exchange(base, to, predictor):
     draw = ImageDraw.Draw(im)
     for i, v in enumerate(new_a):
         if i <= 16 or i >= 27:
-            draw.rectangle((v[0], v[1], new_a[30, 0], new_a[30, 1]), fill=255)
+            min_x = min(v[0], new_a[30, 0])
+            min_y = min(v[1], new_a[30, 1])
+            max_x = max(v[0], new_a[30, 0])
+            max_y = max(v[1], new_a[30, 1])
         elif i <= 21:
-            draw.rectangle((min(v[0], shape_to[i, 0]), min(v[1], shape_to[i, 1]), new_a[30, 0], new_a[30, 1]),
-                           fill=255)
+            min_x = min(min(v[0], shape_to[i, 0]), new_a[30, 0])
+            min_y = min(min(v[1], shape_to[i, 1]), new_a[30, 1])
+            max_x = max(min(v[0], shape_to[i, 0]), new_a[30, 0])
+            max_y = max(min(v[1], shape_to[i, 1]), new_a[30, 1])
         else:
-            draw.rectangle((max(v[0], shape_to[i, 0]), min(v[1], shape_to[i, 1]), new_a[30, 0], new_a[30, 1]),
-                           fill=255)
+            min_x = min(max(v[0], shape_to[i, 0]), new_a[30, 0])
+            min_y = min(max(v[1], shape_to[i, 1]), new_a[30, 1])
+            max_x = max(max(v[0], shape_to[i, 0]), new_a[30, 0])
+            max_y = max(max(v[1], shape_to[i, 1]), new_a[30, 1])
+        draw.rectangle((min_x, min_y, max_x, max_y), fill=255)
     im_blur = im.filter(ImageFilter.GaussianBlur(10)) # mask image
 
     base_resize = Image.open("images/base_resize.jpeg")
