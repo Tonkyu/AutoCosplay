@@ -116,7 +116,7 @@ def face_exchange(base, to, predictor):
     
     im_crop = base_rotate.crop((0, 0, top.size[0], top.size[1]))
 
-    im_crop_cv2 = np.array(im_crop)
+    im_crop_cv2 = pil2cv(im_crop)
     top_cv2 = pil2cv(top)
     im_blur_cv2 = pil2cv(im_blur)
 
