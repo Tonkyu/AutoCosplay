@@ -18,8 +18,8 @@ class My_image:
         self.new_size = new_size
         self.mask_size = mask_size
         self.theta = theta
-        self.center = center
-        self.translate = translate
+        #self.center = center
+        #self.translate = translate
         self.top = top
         self.im_blur = im_blur
         self.shape_to = shape_to
@@ -66,7 +66,7 @@ class My_image:
                                          translate=tuple(self.shape_to[30, :] - shape_base[30, :]))
         im_crop = base_rotate.crop((0, 0, self.top.size[0], self.top.size[1]))
         result_img = self.top.copy()
-        result_img.paste(im_crop, (0, 0), self.im_blur)
+        result_img.paste(im_crop, (0, 0), im_blur)
         return result_img
     
     def base_process(self, basep):
@@ -188,7 +188,7 @@ if __name__ == "__main__":
         sys.exit()
     
     base_array = np.array(cv2.cvtColor(src, cv2.COLOR_BGR2RGB))
-    output_array, process_set = face_exchange(base_array, "lennon_large.jpeg", predictor)
+    output_array, process_set = face_exchange(base_array, "../images/characters/ace.png", predictor)
     img = cv2.cvtColor(output_array, cv2.COLOR_RGB2BGR)
     #img = cv2.imread(output)
 
