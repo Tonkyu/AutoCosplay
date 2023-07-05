@@ -29,6 +29,8 @@ def render()->st:
 
 render()
 
+st.markdown('<style>' + open('style.css').read() + '</style>', unsafe_allow_html=True)
+
 # サイドバーレイアウト (Sidebar)
 character_directory="../images/output"
 character_list = [file for file in os.listdir(character_directory) if not file.startswith('.')]
