@@ -4,8 +4,3 @@ channels:
 dependencies:
   - streamlit >= 0.73
   - dlib
-
-name: cmake
-name: numpy
-name: opencv-contrib-python
-name: streamlit
