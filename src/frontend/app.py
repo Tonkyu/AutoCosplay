@@ -106,7 +106,9 @@ if selected_anime_image is not None:
     image = Image.open(anime_img_path)
     st.image(image, caption="選択した画像", use_column_width=True)
 
-human_file = st.file_uploader("人間の画像(.png，.jpeg)", type=['png', "jpeg"])
+human_file = st.camera_input("Webcam image")
+if human_file  == None:
+    human_file = st.file_uploader("人間の画像(.png, .jpeg)", type=['png', "jpeg"])
 #human_img_path = ''
 if "human_img_path" not in st.session_state:
     st.session_state.human_img_path = ''
