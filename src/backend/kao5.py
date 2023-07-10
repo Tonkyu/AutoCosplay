@@ -3,8 +3,7 @@ from PIL import Image, ImageDraw, ImageFilter
 import cv2
 import dlib
 import numpy as np
-import re
-import os
+import sys
 
 detector = dlib.get_frontal_face_detector()
 #predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
@@ -74,6 +73,10 @@ class My_image:
 
         gray = cv2.cvtColor(np.array(base_resize), cv2.COLOR_RGB2GRAY)
         rects = self.detector(gray, 1)
+        #print(rects, type(rects), bool(rects))
+        if not bool(rects):
+            print("video finish")
+            sys.exit()
         for rect in rects:
             shape = self.predictor(gray, rect)
             shape_np = np.zeros((68, 2), dtype=int)
@@ -103,6 +106,9 @@ def face_exchange(base_array, to_path, predictor):
 
     gray = cv2.cvtColor(to_cv, cv2.COLOR_BGR2GRAY)
     rects = detector(gray, 1)
+    if not bool(rects):
+        print("これは人間じゃない")
+        sys.exit()
     for rect in rects:
         shape = predictor(gray, rect)
         shape_np = np.zeros((68, 2), dtype=int)
@@ -179,7 +185,6 @@ def face_exchange(base_array, to_path, predictor):
     return np.array(top), process_set
 
 if __name__ == "__main__":
-    import sys
     cap = cv2.VideoCapture(0)
     predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
     ret, src = cap.read()
@@ -188,18 +193,19 @@ if __name__ == "__main__":
         sys.exit()
     
     base_array = np.array(cv2.cvtColor(src, cv2.COLOR_BGR2RGB))
-    output_array, process_set = face_exchange(base_array, "../images/characters/ace.png", predictor)
+    output_array, process_set = face_exchange(base_array, "lennon.jpeg", predictor)
     img = cv2.cvtColor(output_array, cv2.COLOR_RGB2BGR)
     #img = cv2.imread(output)
 
     cv2.imshow("win_img", img)
     cv2.waitKey(0)
     cv2.destroyWindow("win_img")
-
+    """
     cap = cv2.VideoCapture(0)
     if not cap.isOpened():
         print("Can not open camera")
         sys.exit()
+    """
 
     while True:
         ret, src = cap.read()
