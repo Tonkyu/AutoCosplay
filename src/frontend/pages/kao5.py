@@ -195,17 +195,10 @@ if __name__ == "__main__":
     base_array = np.array(cv2.cvtColor(src, cv2.COLOR_BGR2RGB))
     output_array, process_set = face_exchange(base_array, "lennon.jpeg", predictor)
     img = cv2.cvtColor(output_array, cv2.COLOR_RGB2BGR)
-    #img = cv2.imread(output)
 
     cv2.imshow("win_img", img)
     cv2.waitKey(0)
     cv2.destroyWindow("win_img")
-    """
-    cap = cv2.VideoCapture(0)
-    if not cap.isOpened():
-        print("Can not open camera")
-        sys.exit()
-    """
 
     while True:
         ret, src = cap.read()
@@ -217,4 +210,4 @@ if __name__ == "__main__":
         if cv2.waitKey(90) == 27:
             break
 
-    cv2.destroyAllWindows()
+    cv2.destroyAllWindows() 
