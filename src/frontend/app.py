@@ -195,3 +195,21 @@ if uploaded_completed_file != None:
     st.image(img3_array, caption="完成画像", use_column_width=True)
 
 ###################################
+
+# FotorのアイコンのURL(Imgurアプリでインターネット上にアップロード)
+icon_url = "https://imgur.com/lU4PIc5.jpeg"
+# FotorのプロフィールページのURL
+profile_url = "https://www.fotor.com/jp/"
+
+# アイコンを表示する
+markdown = """
+#完成した写真をアプリで加工しよう!
+"""
+st.markdown(markdown)
+
+st.markdown(
+    f'<a href="{profile_url}" target="_blank">'
+    f'<img src="{icon_url}" alt="Fotor" width="150">'
+    f'</a>',
+    unsafe_allow_html=True
+)
