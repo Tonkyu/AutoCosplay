@@ -56,7 +56,7 @@ class My_image:
                 draw.rectangle((max(v[0], self.shape_to[i, 0]), min(v[1], self.shape_to[i, 1]), new_a[30, 0], new_a[30, 1]),
                             fill=255)
 
-        im_blur = im.filter(ImageFilter.GaussianBlur(10))
+        im_blur = im.filter(ImageFilter.GaussianBlur(5))
         mask_size = (max(im_blur.size[0], base_resize.size[0]),
                  max(im_blur.size[1], base_resize.size[1]))
         base_expand = Image.new(base_resize.mode, mask_size, (0, 0, 0))
@@ -168,7 +168,7 @@ def face_exchange(base_array, to_path, predictor):
             draw.rectangle((max(v[0], shape_to[i, 0]), min(v[1], shape_to[i, 1]), new_a[30, 0], new_a[30, 1]),
                            fill=255)
 
-    im_blur = im.filter(ImageFilter.GaussianBlur(10))
+    im_blur = im.filter(ImageFilter.GaussianBlur(5))
     mask_size = (max(im_blur.size[0], base_resize.size[0]),
                  max(im_blur.size[1], base_resize.size[1]))
     base_expand = Image.new(base_resize.mode, mask_size, (0, 0, 0))

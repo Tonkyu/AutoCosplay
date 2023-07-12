@@ -8,6 +8,7 @@ import numpy as np
 import dlib
 import sys
 import os
+import time
 
 anime_directory = "../images/characters"
 image_list = os.listdir(anime_directory)
@@ -18,7 +19,7 @@ if "cnt" not in st.session_state:
     st.session_state.cnt = 0
 st.session_state.cnt = st.button("stop")
 if st.session_state.cnt == True:
-    cv2.waitKey(0)
+    sys.exit()
 
 cap = cv2.VideoCapture(0)
 image_loc = st.empty()
@@ -43,3 +44,4 @@ while True:
     img = process_set.base_process(Image.fromarray(cv2.cvtColor(src, cv2.COLOR_BGR2RGB)))
     #img = ImageOps.mirror(img)
     image_loc.image(img)
+    time.sleep(0.033)
